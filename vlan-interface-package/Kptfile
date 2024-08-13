@@ -20,3 +20,20 @@ upstreamLock:
     commit: ef8f0d51a811fd93ffe16ef7aad19281d2f18e1d
 info:
   description: this package is used to create the required VLANs in the workload clusters
+pipeline:
+  mutators:
+  - name: PackageVariant.edge-vlan-config..0
+    image: gcr.io/kpt-fn/search-replace:v0.2.0
+    configMap:
+      by-value: VLAN_PARAMS
+      put-value: |
+        configs:
+          - master: ens19
+            vlanIds:
+              - 101
+              - 102
+              - 103
+              - 104
+              - 105
+    selectors:
+    - kind: ConfigMap
