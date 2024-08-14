@@ -1,0 +1,54 @@
+apiVersion: kpt.dev/v1
+kind: Kptfile
+metadata: # kpt-merge: /remote-site-router-package
+  name: remote-site-router-package
+  annotations:
+    config.kubernetes.io/local-config: "true"
+    internal.kpt.dev/upstream-identifier: 'kpt.dev|Kptfile|default|remote-site-router-package'
+upstream:
+  type: git
+  git:
+    repo: https://github.com/infinitydon/nephio-proxmox-packages.git
+    directory: remote-site-router-package
+    ref: r3
+upstreamLock:
+  type: git
+  git:
+    repo: https://github.com/infinitydon/nephio-proxmox-packages.git
+    directory: remote-site-router-package
+    ref: r3
+    commit: 1d290962f9b5d01d2430a3a94883c82ceace7e36
+info:
+  description: this package is used to deploy metallb
+pipeline:
+  mutators:
+  - name: PackageVariant.edge-site-router-config..0
+    image: gcr.io/kpt-fn/search-replace:v0.2.0
+    configMap:
+      by-value: VPP_CFG
+      put-value: "lcp lcp-sync on\nlcp lcp-auto-subint on\nip table add 1\nip table add 2\nip table add 3\nip table add 4\nip table add 5               \ncreate sub-interfaces dpdk0 101\ncreate sub-interfaces dpdk0 102\ncreate sub-interfaces dpdk0 103\ncreate sub-interfaces dpdk0 104\ncreate sub-interfaces dpdk0 105\nset interface ip table dpdk0.101 1\nset interface ip table dpdk0.102 2\nset interface ip table dpdk0.103 3\nset interface ip table dpdk0.104 4\nset interface ip table dpdk0.105 5\nset interface state dpdk0 up\nset interface state dpdk0.101 up\nset interface state dpdk0.102 up\nset interface state dpdk0.103 up\nset interface state dpdk0.104 up\nset interface state dpdk0.105 up\nlcp create dpdk0 host-if dpdk0\nlcp create dpdk0.101 host-if n3\nlcp create dpdk0.102 host-if n4\nlcp create dpdk0.103 host-if n6\nlcp create dpdk0.104 host-if e1\nlcp create dpdk0.105 host-if f1\nset interface ip address dpdk0.101 192.168.50.1/24\nset interface ip address dpdk0.102 192.168.51.1/24\nset interface ip address dpdk0.103 192.168.52.1/24\nset interface ip address dpdk0.104 192.168.53.1/24\nset interface ip address dpdk0.105 192.168.54.1/24\n"
+    selectors:
+    - kind: ConfigMap
+  - name: PackageVariant.edge-site-router-config..1
+    image: gcr.io/kpt-fn/search-replace:v0.2.0
+    configMap:
+      by-value: FRR_VPP_INT_CONFIG
+      put-value: |
+        sleep 20
+        ip link add dev n3vrf type vrf table 1
+        ip link add dev n4vrf type vrf table 2
+        ip link add dev n6vrf type vrf table 3
+        ip link add dev e1vrf type vrf table 4
+        ip link add dev f1vrf type vrf table 5
+        ip link set dev n3vrf up
+        ip link set dev n4vrf up
+        ip link set dev n6vrf up
+        ip link set dev e1vrf up
+        ip link set dev f1vrf up
+        ip link set dev n3 master n3vrf
+        ip link set dev n4 master n4vrf
+        ip link set dev n6 master n6vrf
+        ip link set dev e1 master e1vrf
+        ip link set dev f1 master f1vrf
+    selectors:
+    - kind: DaemonSet
