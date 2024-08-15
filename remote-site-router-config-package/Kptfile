@@ -20,3 +20,38 @@ upstreamLock:
     commit: 603a04ee0bfd4d210bad384be42ff82af81929e7
 info:
   description: this package is used to deploy FRR site router config
+pipeline:
+  mutators:
+  - name: PackageVariant.edge-frr-router-config..0
+    image: gcr.io/kpt-fn/search-replace:v0.2.0
+    configMap:
+      by-value: FRR_SITE_ROUTER_CONFIG
+      put-value: |-
+        router bgp 65004 vrf n4vrf
+         no bgp ebgp-requires-policy
+         no bgp hard-administrative-reset
+         no bgp default ipv4-unicast
+         no bgp graceful-restart notification
+         bgp graceful-restart preserve-fw-state
+         no bgp network import-check
+         neighbor 192.168.51.3 remote-as 65004
+         !
+        router bgp 65001 vrf e1vrf
+         no bgp ebgp-requires-policy
+         no bgp hard-administrative-reset
+         no bgp default ipv4-unicast
+         no bgp graceful-restart notification
+         bgp graceful-restart preserve-fw-state
+         no bgp network import-check
+         neighbor 192.168.53.3 remote-as 65001
+         !
+        router bgp 65005 vrf f1vrf
+         no bgp ebgp-requires-policy
+         no bgp hard-administrative-reset
+         no bgp default ipv4-unicast
+         no bgp graceful-restart notification
+         bgp graceful-restart preserve-fw-state
+         no bgp network import-check
+         neighbor 192.168.54.4 remote-as 65005
+    selectors:
+    - kind: FRRConfiguration
