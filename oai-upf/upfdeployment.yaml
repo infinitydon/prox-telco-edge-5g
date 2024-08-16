@@ -1,10 +1,10 @@
 apiVersion: workload.nephio.org/v1alpha1
 kind: NFDeployment
 metadata: # kpt-merge: upf-example/upf-example
-  name: upf-example
-  namespace: upf-example
+  name: upf-edge
+  namespace: oai-core
   annotations:
-    internal.kpt.dev/upstream-identifier: 'workload.nephio.org|NFDeployment|upf-example|upf-example'
+    internal.kpt.dev/upstream-identifier: workload.nephio.org|NFDeployment|upf-example|upf-example
 spec:
   provider: upf.openairinterface.org
   capacity:
@@ -17,18 +17,18 @@ spec:
   interfaces:
   - name: n3
     ipv4:
-      address: UPF_N3_IP
-      gateway: UPF_N3_GW
+      address: 192.168.50.2/24
+      gateway: 192.168.50.1
     vlanID: 30
   - name: n4
     ipv4:
-      address: UPF_N4_IP
-      gateway: UPF_N4_GW
+      address: 192.168.51.2/24
+      gateway: 192.168.51.1
     vlanID: 31
   - name: n6
     ipv4:
-      address: UPF_N6_IP
-      gateway: UPF_N6_GW
+      address: 192.168.52.2/24
+      gateway: 192.168.52.1
     vlanID: 422
   networkInstances:
   - name: vpc-internal

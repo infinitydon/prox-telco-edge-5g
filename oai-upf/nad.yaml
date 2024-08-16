@@ -2,11 +2,11 @@ apiVersion: k8s.cni.cncf.io/v1
 kind: NetworkAttachmentDefinition
 metadata: # kpt-merge: upf-example/upf-edge-n3
   name: upf-edge-n3
-  namespace: upf-example
+  namespace: oai-core
   annotations:
-    internal.kpt.dev/upstream-identifier: 'k8s.cni.cncf.io|NetworkAttachmentDefinition|upf-example|upf-edge-n3'
+    internal.kpt.dev/upstream-identifier: k8s.cni.cncf.io|NetworkAttachmentDefinition|upf-example|upf-edge-n3
 spec:
-  config: |
+  config: |-
     {
       "cniVersion": "0.3.1",
       "name": "upf-core-n3",
@@ -16,11 +16,16 @@ spec:
           "capabilities": {
             "ips": true
           },
-          "master": "UPF_N3_MULTUSPARENTINTERFACE",
+          "master": "mltus_ens19_101",
           "mode": "bridge",
           "ipam": {
             "type": "static",
-            "routes": [{ "dst": "CUUP_N3_NETWORKADDRESS", "gw": "UPF_N3_GW" }]
+            "routes": [
+              {
+                "dst": "192.168.50.0/24",
+                "gw": "192.168.50.1"
+              }
+            ]
           }
         }
       ]
@@ -30,11 +35,11 @@ apiVersion: k8s.cni.cncf.io/v1
 kind: NetworkAttachmentDefinition
 metadata: # kpt-merge: upf-example/upf-edge-n4
   name: upf-edge-n4
-  namespace: upf-example
+  namespace: oai-core
   annotations:
-    internal.kpt.dev/upstream-identifier: 'k8s.cni.cncf.io|NetworkAttachmentDefinition|upf-example|upf-edge-n4'
+    internal.kpt.dev/upstream-identifier: k8s.cni.cncf.io|NetworkAttachmentDefinition|upf-example|upf-edge-n4
 spec:
-  config: |
+  config: |-
     {
       "cniVersion": "0.3.1",
       "name": "upf-core-n4",
@@ -44,11 +49,16 @@ spec:
           "capabilities": {
             "ips": true
           },
-          "master": "UPF_N4_MULTUSPARENTINTERFACE",
+          "master": "mltus_ens19_102",
           "mode": "bridge",
           "ipam": {
             "type": "static",
-            "routes": [{ "dst": "SMF_N4_NETWORKADDRESS", "gw": "UPF_N4_GW" }]
+            "routes": [
+              {
+                "dst": "192.168.56.0/24",
+                "gw": "192.168.51.1"
+              }
+            ]
           }
         }
       ]
@@ -58,11 +68,11 @@ apiVersion: k8s.cni.cncf.io/v1
 kind: NetworkAttachmentDefinition
 metadata: # kpt-merge: upf-example/upf-edge-n6
   name: upf-edge-n6
-  namespace: upf-example
+  namespace: oai-core
   annotations:
-    internal.kpt.dev/upstream-identifier: 'k8s.cni.cncf.io|NetworkAttachmentDefinition|upf-example|upf-edge-n6'
+    internal.kpt.dev/upstream-identifier: k8s.cni.cncf.io|NetworkAttachmentDefinition|upf-example|upf-edge-n6
 spec:
-  config: |
+  config: |-
     {
       "cniVersion": "0.3.1",
       "name": "upf-core-n6",
@@ -72,7 +82,7 @@ spec:
           "capabilities": {
             "ips": true
           },
-          "master": "UPF_N6_MULTUSPARENTINTERFACE",
+          "master": "mltus_ens19_103",
           "mode": "bridge",
           "ipam": {
             "type": "static"
