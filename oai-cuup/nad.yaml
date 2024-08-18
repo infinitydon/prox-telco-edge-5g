@@ -2,11 +2,11 @@ apiVersion: k8s.cni.cncf.io/v1
 kind: NetworkAttachmentDefinition
 metadata: # kpt-merge: example/cuup-edge-n3
   name: cuup-edge-n3
-  namespace: example
+  namespace: oai-ran-cuup
   annotations:
-    internal.kpt.dev/upstream-identifier: 'k8s.cni.cncf.io|NetworkAttachmentDefinition|example|cuup-edge-n3'
+    internal.kpt.dev/upstream-identifier: k8s.cni.cncf.io|NetworkAttachmentDefinition|example|cuup-edge-n3
 spec:
-  config: |
+  config: |-
     {
       "cniVersion": "0.3.1",
       "name": "cuup-edge-n3",
@@ -16,7 +16,7 @@ spec:
           "capabilities": {
             "ips": true
           },
-          "master": "CUUP_N3_MULTUSPARENTINTERFACE",
+          "master": "mltus_ens19_101",
           "mode": "bridge",
           "ipam": {
             "type": "static"
@@ -29,11 +29,11 @@ apiVersion: k8s.cni.cncf.io/v1
 kind: NetworkAttachmentDefinition
 metadata: # kpt-merge: example/cuup-edge-f1u
   name: cuup-edge-f1u
-  namespace: example
+  namespace: oai-ran-cuup
   annotations:
-    internal.kpt.dev/upstream-identifier: 'k8s.cni.cncf.io|NetworkAttachmentDefinition|example|cuup-edge-f1u'
+    internal.kpt.dev/upstream-identifier: k8s.cni.cncf.io|NetworkAttachmentDefinition|example|cuup-edge-f1u
 spec:
-  config: |
+  config: |-
     {
       "cniVersion": "0.3.1",
       "name": "cuup-edge-f1u",
@@ -43,11 +43,16 @@ spec:
           "capabilities": {
             "ips": true
           },
-          "master": "CUUP_F1U_MULTUSPARENTINTERFACE",
+          "master": "mltus_ens19_105",
           "mode": "bridge",
           "ipam": {
             "type": "static",
-            "routes": [{ "dst": "CUCP_F1C_NETWORKADDRESS", "gw": "CUUP_F1U_GW" }]
+            "routes": [
+              {
+                "dst": "192.168.58.0/24",
+                "gw": "192.168.54.1"
+              }
+            ]
           }
         }
       ]
@@ -57,11 +62,11 @@ apiVersion: k8s.cni.cncf.io/v1
 kind: NetworkAttachmentDefinition
 metadata: # kpt-merge: example/cuup-edge-e1
   name: cuup-edge-e1
-  namespace: example
+  namespace: oai-ran-cuup
   annotations:
-    internal.kpt.dev/upstream-identifier: 'k8s.cni.cncf.io|NetworkAttachmentDefinition|example|cuup-edge-e1'
+    internal.kpt.dev/upstream-identifier: k8s.cni.cncf.io|NetworkAttachmentDefinition|example|cuup-edge-e1
 spec:
-  config: |
+  config: |-
     {
       "cniVersion": "0.3.1",
       "name": "cuup-edge-e1",
@@ -71,11 +76,16 @@ spec:
           "capabilities": {
             "ips": true
           },
-          "master": "CUUP_E1_MULTUSPARENTINTERFACE",
+          "master": "mltus_ens19_104",
           "mode": "bridge",
           "ipam": {
             "type": "static",
-            "routes": [{ "dst": "CUCP_E1_NETWORKADDRESS", "gw": "CUUP_E1_GW" }]
+            "routes": [
+              {
+                "dst": "192.168.57.0/24",
+                "gw": "192.168.53.1"
+              }
+            ]
           }
         }
       ]
