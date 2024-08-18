@@ -5,7 +5,7 @@ metadata: # kpt-merge: oai-ran-du/oai-cucp-config
   namespace: oai-ran-du
   annotations:
     specializer.nephio.org/owner: req.nephio.org/v1alpha1.Dependency.cucp
-    internal.kpt.dev/upstream-identifier: 'ref.nephio.org|Config|oai-ran-du|oai-cucp-config'
+    internal.kpt.dev/upstream-identifier: ref.nephio.org|Config|oai-ran-du|oai-cucp-config
 spec:
   config:
     apiVersion: workload.nephio.org/v1alpha1
@@ -14,26 +14,26 @@ spec:
       name: cucp-edge
       namespace: oai-ran-cucp
       annotations:
-        config.kubernetes.io/index: "0"
-        internal.config.kubernetes.io/index: "0"
+        config.kubernetes.io/index: '0'
+        internal.config.kubernetes.io/index: '0'
         internal.config.kubernetes.io/path: cucpdeployment.yaml
         internal.kpt.dev/upstream-identifier: workload.nephio.org|NFDeployment|example|cucp-example
     spec:
       interfaces:
       - name: n2
         ipv4:
-          address: CUCP_N2_IP
-          gateway: CUCP_N2_GW
+          address: 192.168.59.2/24
+          gateway: 192.168.59.1
         vlanID: 30
       - name: f1c
         ipv4:
-          address: CUCP_F1C_IP
-          gateway: CUCP_F1C_GW
+          address: 192.168.58.2/24
+          gateway: 192.168.58.1
         vlanID: 32
       - name: e1
         ipv4:
-          address: CUCP_E1_IP
-          gateway: CUCP_E1_GW
+          address: 192.168.57.2/24
+          gateway: 192.168.57.1
         vlanID: 33
       networkInstances:
       - name: vpc-ran
